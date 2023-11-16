@@ -9,7 +9,7 @@ let employees = [
 
 // CHECK TO SEE IF STORAGE OBJECT EXISTS WHEN THE PAGE LOADS
 // IF DOES, RETURN STORAGE OBJECT INTO ARRAY INSTEAD OF POPULATED ARRAY
-if (localStorage.getItem('employees')) {
+if (localStorage.getItem('employees') !==null) {
     employees = JSON.parse(localStorage.getItem('employees'))
 }
 
@@ -17,7 +17,6 @@ if (localStorage.getItem('employees')) {
 let form = document.getElementById('addForm');
 let empTable = document.getElementById('empTable');
 let count = document.getElementById('empCount');
-// let submitBtn = document.getElementById('submit');
 
 // BUILD THE EMPLOYEES TABLE WHEN THE PAGE LOADS
 buildGrid();
@@ -70,17 +69,23 @@ function buildGrid() {
     let tbody = document.createElement('tbody');
     // LOOP THROUGH THE ARRAY OF EMPLOYEES
     // REBUILDING THE ROW STRUCTURE
-    employees.forEach((employee, index) => {
-        let row = tbody.insertRow();
-        Object.values(employee).forEach(text => {
-            let cell = row.insertCell();
-            cell.appendChild(document.createTextNode(text));
-        });
-    })
+    for (let employee of employees) {
+        tbody.innerHTML +=
+            `
+                <tr>
+                    <td>${employee[0]}</td>
+                    <td>${employee[1]}</td>
+                    <td>${employee[2]}</td>
+                    <td>${employee[3]}</td>
+                    <td>${employee[4]}</td>
+                    <td><button class='btn btn-sm btn-danger delete'>X</button></td>
+                </tr>
+            `
+    }
     // BIND THE TBODY TO THE EMPLOYEE TABLE
     empTable.appendChild(tbody);
     // UPDATE EMPLOYEE COUNT
-    document.getElementById('empCount').innerText = employees.length;
+    count.innerText = employees.length;
     // STORE THE ARRAY IN STORAGE
     localStorage.setItem('employees', JSON.stringify(employees));
 };
